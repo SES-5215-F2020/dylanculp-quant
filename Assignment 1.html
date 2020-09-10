@@ -1,0 +1,43 @@
+---
+title: "First Assignment"
+author: "Dylan Culp"
+date: "9/8/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+For this assignment, I chose to look at household-level data related to housing (costs and physical characteristics) in Rhode Island. I did not collect this data with a clear research question in mind, but hope to see if the following variables can reveal some interesting trends:
+
+  1. Lot size (categorical): ACR
+  2. Units in structure (categorical): BLD
+  3. Number of bedrooms (continuous): BDSP
+  4. Property taxes paid in prior year (continuous): TAXAMT
+  5. Gross rent as % of resident income (continuous): GRPIP
+  6. Monthly electricity cost (continuous): ELEP
+
+I then decided to filter out property owners, to focus allow for the gross rent variable. By including only observations where TAXAMT = -1, I was able to select non-property tax paying households. This may not be perfectly synonymous with renter households, however. Here is the code:
+```{r}
+hh_data <- get_pums(variables = c("ACR",
++                                   "BLD",
++                                   "BDSP",
++                                   "TAXAMT",
++                                   "GRPIP",
++                                   "ELEP"),
++                     state = "RI",
++                     year = 2018,
++                     survey = "acs1",
++                     recode = TRUE) %>%
++     filter(TAXAMT == -1) %>%
++     select(ACR_label, BLD_label, BDSP, GRPIP, ELEP)
+```
+
+After this filter, the population is defined as "non-property tax paying households in Rhode Island", and the n=3480. Although the first 10 rows are identical, the rest of the data set does encompass more diverse data.  
+
+```{r}
+hh_data
+```
+
+
