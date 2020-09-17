@@ -1,0 +1,115 @@
+---
+title: "Assignment 2"
+author: "Dylan Culp"
+date: "9/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+I decided to use my data for King County Washington from VIS (instead of my RI data from last week), since I found the figures here more interesting. Each of these data are represented at the tract level.
+
+```{r}
+king_tracts<-(read_csv("king_tracts.csv", col_names =c("X1", "GEOID", "rural", "majority_race_eth", "pct_rental", "avg_hh_size", "tot_pop", "med_age")))
+
+```
+
+Continuous Variables
+
+1. Percentage of renters by tract
+
+```{r}
+ggplot(king_tracts, aes(x = pct_rental))+
+  geom_histogram()
+
+```
+```{r}
+mean(pct_rental)
+sd(pct_rental)
+t.test(pct_rental)
+quantile(pct_rental)
+
+```
+
+Sample mean: 35.4%
+Sample std dev: 19.3%
+95% Confidnence interval mean: between 33.6 and 37.3%
+IQ range: 20% to 49%
+
+
+2. Average household size
+```{r}
+ggplot(king_tracts, aes(x = avg_hh_size))+
+  geom_histogram()
+```
+
+
+```{r}
+mean(avg_hh_size)
+sd(avg_hh_size)
+t.test(avg_hh_size)
+quantile(avg_hh_size)
+```
+Sample mean: 2.46
+Sample std dev: 0.43
+95% Confidnence interval mean: between 2.41 and 2.50
+IQ range: 2.21 to 2.77
+
+
+
+3. Total Population per tract
+```{r}
+ggplot(king_tracts, aes(x = tot_pop))+
+  geom_histogram()
+```
+
+```{r}
+mean(tot_pop)
+sd(tot_pop)
+t.test(tot_pop)
+quantile(tot_pop)
+```
+
+Sample mean: 4865
+Sample std dev: 1486
+95% Confidnence interval mean: between 4718 and 5011
+IQ range: 3759 to 5797
+
+
+4. Median Age
+```{r}
+ggplot(king_tracts, aes(x = med_age))+
+  geom_histogram()
+```
+
+```{r}
+mean(med_age)
+sd(med_age)
+t.test(med_age)
+quantile(med_age)
+```
+
+Sample mean: 37.9
+Sample std dev: 5.1
+95% Confidnence interval mean: between 37.4 and 38.4
+IQ range: 34.5 to 40.9
+
+
+
+Categorical Variables
+
+Is the tract rural or urban?
+
+```{r}
+t.test(rural)
+```
+```{r}
+t.test(majority_race_eth, TRUE)
+```
