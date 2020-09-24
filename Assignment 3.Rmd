@@ -1,0 +1,121 @@
+---
+title: "Assignment 3"
+author: "Dylan Culp"
+date: "9/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```
+
+Loading my data from prior projects:
+```{r}
+king_tracts<-read_csv("king_tracts.csv")
+attach(king_tracts )
+
+```
+1. Correlations (Continuous-continuous)
+
+Four of my variables are continuous, which calls for six correlation tests between these variables: 
+```{r}
+cor.test(king_tracts$pct_rental, king_tracts$med_age)
+cor.test(king_tracts$pct_rental, king_tracts$avg_hh_size)
+cor.test(king_tracts$pct_rental, king_tracts$tot_pop)
+cor.test(king_tracts$avg_hh_size, king_tracts$tot_pop)
+cor.test(king_tracts$avg_hh_size, king_tracts$med_age)
+cor.test(king_tracts$tot_pop, king_tracts$med_age)
+
+```
+
+
+Percent renters and Median Age
+
+  Correlation: -0.574732 
+  P value: <2.2e-16 (statistically significant)
+
+Percent renters and Average Household Size:
+  Correlation: -0.64888811
+  P value: <2.2e-16 (statistically significant)
+  
+Percent Renters and total Population:
+  Correlation: 0.01471284
+  P value: 0.7701 (not statistically significant)
+  
+Average housheold size and total population:
+  Correlation: 0.11528194
+  P value: 0.0216 (statistically significant)
+  
+Average household size and median age:
+  Correlation: 0.03455301 
+  P value:0.4924 (not statistically significant) 
+  
+Total population and median age:
+  Correlation: 0.21226327
+  P value: 2.002e-05 (statistically significant)
+
+
+
+
+Binary and continuous: Two Sample T Test
+
+I have one binary variable (whether the tract is rural or urban), and I will use the Two Sample test to assess its relationship with the four continuous variables.
+```{r}
+
+t.test(pct_rental ~ rural, data = king_tracts)
+t.test(avg_hh_size ~ rural, data = king_tracts)
+t.test(tot_pop ~ rural, data = king_tracts)
+t.test(med_age ~ rural, data = king_tracts)
+
+```
+Key figures:
+
+Rural and Percent Renters
+  T value: 6.461
+  P value: 0.01236 (statistically significant)
+
+Rural and Average Household Size
+  T value: 0.25081
+  P value: 0.8244 (not statistically significant)
+
+Rural and Total Population
+  T value: 0.19533
+  P value: 0.8627 (not statistically significant)
+  
+Rural and Median Age: 
+  T value: -3.5737
+  P value: 0.06847 (not statistically significant)
+
+
+
+
+Two categorical Values: Chi Squared
+
+I am using the Chi Squared for the relationship between my only two categorical values: Rural and Majority race/ethnicity
+
+```{r}
+chisq.test(king_tracts$rural, king_tracts$majority_race_eth)
+```
+X squared value:
+P value= 0.6584 (not statistically significant)
+
+
+
+Anova Test: Categorical and Continuous Variables
+
+Lastly, I will use this test to measure the relationship between the multivariate categorical (majority race/ethnicity) and four continuous variables.
+
+```{r}
+summary(aov(pct_rental ~ majority_race_eth, data=king_tracts))
+summary(aov(avg_hh_size ~ majority_race_eth, data=king_tracts))
+summary(aov(tot_pop ~ majority_race_eth, data=king_tracts))
+summary(aov(med_age ~ majority_race_eth, data=king_tracts))
+```
+
+
