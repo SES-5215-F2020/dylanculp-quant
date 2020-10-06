@@ -1,0 +1,29 @@
+---
+title: "Assignment 4"
+author: "Dylan Culp"
+date: "10/5/2020"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+I will continue with my tract-level data from King County, Washington. My dependent variable is the percent renters, and I will see how the following variables affect the rate of rentership.
+```{r}
+king_tracts <- read_csv("king_tracts.csv")
+```
+
+
+
+```{r}
+model <- lm(pct_rental ~ rural + majority_race_eth + avg_hh_size + tot_pop + med_age, 
+            data = king_tracts)
+
+summary(model)
+```
+
+This R-squared value (0.8268) is surprisingly high, indicating that about this combination of independent variables explains 82% of variance in the dependent (percentage renters).  Such a high R-squared shows data follow a linear relationship, although that doesn't necessarily mean there is a strong positive or negative relationship.
+
+The most substantial coefficient estimate is average household size. The value of -0.31 predicts an increase in household size will decrease the tract-wide renter rate. This value is also statistically significant at the 95% confidence interval. 
+
+
