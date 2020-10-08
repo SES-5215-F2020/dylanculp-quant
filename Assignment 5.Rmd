@@ -1,0 +1,42 @@
+---
+title: "Assignment 5"
+author: "Dylan Culp"
+date: "10/6/2020"
+output: html_document
+---
+
+My model last time was a bit crude.
+
+```{r}
+library(tidyverse)
+```
+I will continue with my tract-level data from King County, Washington. My dependent variable is the percent renters, and I will see how the following variables affect the rate of rentership.
+```{r}
+king_tracts <- read_csv("king_tracts.csv")
+```
+
+I will make a few changes. First, I am dropping two variables that I don't see as related to the dependent variable: 
+
+  1. While there may be an interesting relationship between rural/urban and rentership, there are so few rural tracts in the county (only 4) that little predictive effect can be extrapolated. For that reason, I will drop the "rural" category.
+  
+  2. Similarly, I don't see a clear relationship between total population per tract and rate of renters. While I find the variance between the people who live in various tracts interesting, I'm struggling to see an influential effect on the ratio of renters. As a result, I will drop the tot_pop variable.
+  
+This leaves us with three independent variables: majority race/ethnicity, average household size, and median age.
+
+  1. I will convert median age into a categorical variable, using 5 buckets.
+  
+  
+```{r}
+king_tracts <- king_tracts %>%
+  mutate(med_age_cat= cut(med_age, breaks=c(-Inf,30,40,50,60,Inf),
+                                   labels=c("less than 30", "30-40", "40-50", "50-60", "over 60"))) 
+```
+  
+  2. I will try to add the rural category as an interaction term. I don't think this will have too meaningful an effect, but I'm curious to see what happens.
+
+```{r}
+model_2 <- lm(pct_rental ~ majority_race_eth + avg_hh_size + med_age_cat + majority_race_eth:rural + avg_hh_size:rural + med_age_cat:rural, 
+            data = king_tracts)
+
+summary(model_2)
+```
